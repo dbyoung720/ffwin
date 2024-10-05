@@ -1,0 +1,82 @@
+ libavfilter/textutils.c     |  1 +
+ libavfilter/vf_libplacebo.c | 24 ++++++++++++------------
+ 2 files changed, 13 insertions(+), 12 deletions(-)
+
+diff --git a/libavfilter/textutils.c b/libavfilter/textutils.c
+index e6b5239..eabf842 100644
+--- a/libavfilter/textutils.c
++++ b/libavfilter/textutils.c
+@@ -31,6 +31,7 @@
+ #include "libavutil/file.h"
+ #include "libavutil/mem.h"
+ #include "libavutil/time.h"
++#include "libavutil/time_internal.h"
+ 
+ static int ff_expand_text_function_internal(FFExpandTextContext *expand_text, AVBPrint *bp,
+                                             char *name, unsigned argc, char **argv)
+diff --git a/libavfilter/vf_libplacebo.c b/libavfilter/vf_libplacebo.c
+index 2176a71..c746db8 100644
+--- a/libavfilter/vf_libplacebo.c
++++ b/libavfilter/vf_libplacebo.c
+@@ -392,9 +392,9 @@ static int update_settings(AVFilterContext *ctx)
+         .minimum_peak = s->min_peak,
+         .scene_threshold_low = s->scene_low,
+         .scene_threshold_high = s->scene_high,
+-#if PL_API_VER >= 263
++//#if PL_API_VER >= 263
+         .percentile = s->percentile,
+-#endif
++//#endif
+     );
+ 
+     opts->color_map_params = *pl_color_map_params(
+@@ -402,10 +402,10 @@ static int update_settings(AVFilterContext *ctx)
+         .tone_mapping_param = s->tonemapping_param,
+         .inverse_tone_mapping = s->inverse_tonemapping,
+         .lut_size = s->tonemapping_lut_size,
+-#if PL_API_VER >= 285
++//#if PL_API_VER >= 285
+         .contrast_recovery = s->contrast_recovery,
+         .contrast_smoothness = s->contrast_smoothness,
+-#endif
++//#endif
+     );
+ 
+     set_gamut_mode(&opts->color_map_params, gamut_mode);
+@@ -430,9 +430,9 @@ static int update_settings(AVFilterContext *ctx)
+             (float) color_rgba[1] / UINT8_MAX,
+             (float) color_rgba[2] / UINT8_MAX,
+         },
+-#if PL_API_VER >= 277
++//#if PL_API_VER >= 277
+         .corner_rounding = s->corner_rounding,
+-#endif
++//#endif
+ 
+         .deband_params = s->deband ? &opts->deband_params : NULL,
+         .sigmoid_params = s->sigmoid ? &opts->sigmoid_params : NULL,
+@@ -457,18 +457,18 @@ static int update_settings(AVFilterContext *ctx)
+     RET(find_scaler(ctx, &opts->params.downscaler, s->downscaler, 0));
+     RET(find_scaler(ctx, &opts->params.frame_mixer, s->frame_mixer, 1));
+ 
+-#if PL_API_VER >= 309
++//#if PL_API_VER >= 309
+     while ((e = av_dict_get(s->extra_opts, "", e, AV_DICT_IGNORE_SUFFIX))) {
+         if (!pl_options_set_str(s->opts, e->key, e->value)) {
+             err = AVERROR(EINVAL);
+             goto fail;
+         }
+     }
+-#else
+-    (void) e;
+-    if (av_dict_count(s->extra_opts) > 0)
+-        av_log(s, AV_LOG_WARNING, "extra_opts requires libplacebo >= 6.309!\n");
+-#endif
++//#else
++//    (void) e;
++//    if (av_dict_count(s->extra_opts) > 0)
++//        av_log(s, AV_LOG_WARNING, "extra_opts requires libplacebo >= 6.309!\n");
++//#endif
+ 
+     return 0;
+ 

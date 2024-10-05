@@ -1,0 +1,18 @@
+ libshaderc_util/CMakeLists.txt | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/libshaderc_util/CMakeLists.txt b/libshaderc_util/CMakeLists.txt
+index 69ba519..f741667 100644
+--- a/libshaderc_util/CMakeLists.txt
++++ b/libshaderc_util/CMakeLists.txt
+@@ -87,3 +87,10 @@ if(${SHADERC_ENABLE_TESTS})
+   add_dependencies(shaderc_util_file_finder_test testdata)
+   add_dependencies(shaderc_util_io_shaderc_test testdata)
+ endif()
++
++if(SHADERC_ENABLE_INSTALL)
++  install(TARGETS shaderc_util
++    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
++endif(SHADERC_ENABLE_INSTALL)

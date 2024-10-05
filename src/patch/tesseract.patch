@@ -1,0 +1,14 @@
+diff --git "a/CMakeLists.txt" "b/CMakeLists.txt"
+index 85af2df0..92ecc4bf 100644
+--- "a/CMakeLists.txt"
++++ "b/CMakeLists.txt"
+@@ -10,6 +10,8 @@
+ 
+ cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
+ 
++set(STATIC 1)
++
+ # In-source builds are disabled.
+ if("${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_BINARY_DIR}")
+   message(
+
