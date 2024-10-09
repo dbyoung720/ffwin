@@ -7,7 +7,7 @@ set PackageName=%2
 :: check if exist source code 
 if exist "%SourceSaveX%" (goto bEnd)
 
-:: get source code download url from addr.ini file
+:: get source code download url from daddr.ini file
 set cmdline=%windir%\System32\WindowsPowerShell\v1.0\powershell -NoProfile -ExecutionPolicy Bypass -Command "%RootPath%src\readini.ps1 -filePath '%RootPath%src\daddr.ini' -section 'http' -key '%PackageName%'"
 FOR /f "delims=" %%A IN ('%cmdline%') DO SET "HTTPURL=%%A"
 
