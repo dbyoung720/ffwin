@@ -1,0 +1,17 @@
+ meson.build | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/meson.build b/meson.build
+index 656ed95..1621ca0 100644
+--- a/meson.build
++++ b/meson.build
+@@ -172,7 +172,8 @@ add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
+ 
+ c_args = []
+ 
+-deps = [freetype_dep, xml_dep]
++bzip2_dep = dependency('bzip2', required: false)
++deps = [freetype_dep, xml_dep, bzip2_dep]
+ incbase = include_directories('.')
+ 
+ # For compatibility to autoconf (regardless of the usage in fontconfig)
