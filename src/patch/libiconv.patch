@@ -1,7 +1,8 @@
  CMakeLists.txt                             |  1 +
+ cmake/dist.cmake                           |  2 +-
  include/iconv.h.build.in                   | 24 +++++++++---------------
  libcharset/include/localcharset.h.build.in |  9 +--------
- 3 files changed, 11 insertions(+), 23 deletions(-)
+ 4 files changed, 12 insertions(+), 24 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index cdded4a..ecc9f14 100644
@@ -15,6 +16,19 @@ index cdded4a..ecc9f14 100644
  )
  
  add_library ( iconv ${SRC_LIBICONV} )
+diff --git a/cmake/dist.cmake b/cmake/dist.cmake
+index 3fe2673..e82472a 100644
+--- a/cmake/dist.cmake
++++ b/cmake/dist.cmake
+@@ -166,7 +166,7 @@ macro ( install_library )
+   endforeach()
+ 
+   install(EXPORT iconv_targets
+-          DESTINATION cmake
++          DESTINATION ${INSTALL_LIB}/cmake
+           COMPONENT cmake)
+ 
+ endmacro ()
 diff --git a/include/iconv.h.build.in b/include/iconv.h.build.in
 index ae50ba3..6b51759 100644
 --- a/include/iconv.h.build.in

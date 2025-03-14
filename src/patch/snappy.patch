@@ -1,0 +1,25 @@
+ CMakeLists.txt | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 0e28684..9168873 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -109,14 +109,14 @@ include(CMakePackageConfigHelpers)
+ 
+ set(INSTALL_INCLUDE_DIR include)
+ configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/package-config.cmakein ${CMAKE_CURRENT_BINARY_DIR}/snappy-config.cmake
+-                              INSTALL_DESTINATION CMake
++                              INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
+                               PATH_VARS INSTALL_INCLUDE_DIR
+                               )
+        
+ write_basic_package_version_file( ${CMAKE_CURRENT_BINARY_DIR}/snappy-config-version.cmake VERSION ${SNAPPY_VERSION} COMPATIBILITY SameMajorVersion )
+ 
+ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/snappy-config.cmake ${CMAKE_CURRENT_BINARY_DIR}/snappy-config-version.cmake
+-        DESTINATION CMake )
++        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake )
+ 
+ 
+-install(EXPORT snappy-targets DESTINATION CMake)        
++install(EXPORT snappy-targets DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)        
