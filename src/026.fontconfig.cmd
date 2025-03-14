@@ -34,7 +34,7 @@ if not exist "%VSSDKPath%\include\fontconfig" (
   CD /D "%VSSDKPath%\include"
   MD fontconfig
   CD /D fontconfig
-  copy /b /y "%SourceCDX%\fontconfig\fontconfig\*.h"
+  copy /b /y "%SourceCDX%\fontconfig\*.h"
 )
 
 set msysVSSDKPath=%VSSDKPath:\=/%
