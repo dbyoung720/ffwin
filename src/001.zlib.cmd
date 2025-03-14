@@ -3,7 +3,7 @@ setlocal EnableDelayedExpansion
 color A
 
 set PackageName=zlib
-set LibraryName=zlibstatic
+set LibraryName=zlib
 set ProjectName=zlib
 set SourceCDX=%SourcePath%\%packageName%
 set BuildPath=%BuildPathX%\%~n0\%Platform1%
