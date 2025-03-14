@@ -5,7 +5,7 @@ ffwin
 
 ## Primary condition:
 * VS2022 must be installed first; 
-* Scoop  must be installed first; (scp.cmd x86/scp.cmd x64; network proxy proxy.cmd must be configured in advance)
+* Scoop  must be installed first;
 
 ## Instructions for use:
 * Before executing zx86.cmd / zx64.cmd, it is necessary to configure the network proxy: proxy.cmd; 
@@ -15,7 +15,6 @@ ffwin
 
 ### Catalog Description:
 * Vs2022\source : Store the source code directory; 
-* Vs2022\scoop  : Scoop software directory The compilation tools are also here Unified management by Scoop; 
 * Vs2022\vsbuild: vs2022 compiles temporary directory; 
 * Vs2022\vssdk  : vs2022 sdk installation directory; 
 

@@ -5,7 +5,7 @@ ffwin
 
 ## 首要条件：
 * vs2022 必须首先安装好.
-* scoop  必须首先安装好；(scp.cmd x86 / scp.cmd x64；网络代理 proxy.cmd 必须提前先配置好)
+* scoop  必须首先安装好；
 
 ## 使用说明：
 * 执行 zx86.cmd / zx64.cmd 前，必须配置网络代理：proxy.cmd.
@@ -15,7 +15,6 @@ ffwin
 
 ### 目录说明：
 * vs2022\source  : 存放源代码目录.
-* vs2022\scoop   : scoop 软件目录. 编译工具也在这里. 由 scoop 统一管理.
 * vs2022\vsbuild : vs2022 编译临时目录.
 * vs2022\vssdk   : vs2022 sdk 安装目录.
 
