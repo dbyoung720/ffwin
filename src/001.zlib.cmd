@@ -13,7 +13,7 @@ set SpecialCMakeParam="-DINSTALL_PKGCONFIG_DIR=%PCInstall%"
 call %RootPath%src\vcmake.cmd %PackageName% %LibraryName% %ProjectName% %SourceCDX% %BuildPath% %SpecialCMakeParam%
 
 :: modify install
-if not exist "%VSSDKPath%\bin\zlib1.dll" exit /b
+if exist "%VSSDKPath%\lib\zlib.lib" exit /b
 
 del "%VSSDKPath%\bin\zlib1.dll"
 del "%VSSDKPath%\bin\z.dll"
