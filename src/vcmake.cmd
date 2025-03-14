@@ -41,7 +41,7 @@ if not exist "%SourceCDX%\CMakeLists.txt" (
 :: CMake source
 echo ¡ï¡ï¡ï¡ï¡ï CMake %PackageName% ¡ï¡ï¡ï¡ï¡ï
 set  SCP=%SpecialCMakeParam:~1,-1%
-set  CMakeCommonParam=-DCMAKE_CONFIGURATION_TYPES=Release -DCMAKE_VERBOSE_MAKEFILE=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded$<$<CONFIG:Debug>:Debug>"
+set  CMakeCommonParam=-DCMAKE_CONFIGURATION_TYPES=Release -DCMAKE_VERBOSE_MAKEFILE=ON -DUSE_MSVC_STATIC_RUNTIME=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded$<$<CONFIG:Debug>:Debug>"
 call %scoop%\apps\cmake\current\bin\cmake %SCP% %CMakeCommonParam% -S "%CMakeFilePath%" -G "%VSCMAKE%" -B "%BuildPath%" -DCMAKE_INSTALL_PREFIX="%VSSDKPath%" -Thost=%Platform1% -A %Platform2%
 call %scoop%\apps\cmake\current\bin\cmake "%BuildPath%"
 

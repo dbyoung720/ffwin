@@ -10,7 +10,7 @@ index 0e28684..9168873 100644
  set(INSTALL_INCLUDE_DIR include)
  configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/package-config.cmakein ${CMAKE_CURRENT_BINARY_DIR}/snappy-config.cmake
 -                              INSTALL_DESTINATION CMake
-+                              INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
++                              INSTALL_DESTINATION lib/cmake
                                PATH_VARS INSTALL_INCLUDE_DIR
                                )
         
@@ -18,8 +18,8 @@ index 0e28684..9168873 100644
  
  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/snappy-config.cmake ${CMAKE_CURRENT_BINARY_DIR}/snappy-config-version.cmake
 -        DESTINATION CMake )
-+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake )
++        DESTINATION lib/cmake )
  
  
 -install(EXPORT snappy-targets DESTINATION CMake)        
-+install(EXPORT snappy-targets DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)        
++install(EXPORT snappy-targets DESTINATION lib/cmake)        
