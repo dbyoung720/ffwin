@@ -3,7 +3,7 @@ setlocal EnableDelayedExpansion
 color A
 
 set PackageName=openexr
-set LibraryName=OpenEXR-3_3
+set LibraryName=OpenEXR-3_4
 set ProjectName=openexr
 set SourceCDX=%SourcePath%\%packageName%
 set BuildPath=%BuildPathX%\%~n0\%Platform1%

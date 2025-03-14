@@ -3,7 +3,7 @@ setlocal EnableDelayedExpansion
 color A
 
 set PackageName=leptonica
-set LibraryName=leptonica-1.84.1
+set LibraryName=leptonica-1.85.1
 set ProjectName=leptonica
 set SourceCDX=%SourcePath%\%packageName%
 set BuildPath=%BuildPathX%\%~n0\%Platform1%

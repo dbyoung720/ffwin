@@ -1,46 +1,48 @@
- loader/CMakeLists.txt | 51 ++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 36 insertions(+), 15 deletions(-)
+ loader/CMakeLists.txt | 47 +++++++++++++++++++++++++++++++++++++----------
+ loader/vulkan.pc.in   |  1 +
+ 2 files changed, 38 insertions(+), 10 deletions(-)
 
 diff --git a/loader/CMakeLists.txt b/loader/CMakeLists.txt
-index 6296ebf..42eb998 100644
+index 624192d..1428bde 100644
 --- a/loader/CMakeLists.txt
 +++ b/loader/CMakeLists.txt
-@@ -379,29 +379,49 @@ if(WIN32)
+@@ -216,7 +216,7 @@ end
+ 
+     if(ASM_COMPILER_WORKS)
+         add_executable(asm_offset asm_offset.c)
+-        target_link_libraries(asm_offset PRIVATE loader_specific_options)
++        target_link_libraries(asm_offset PRIVATE $<BUILD_INTERFACE:loader_specific_options>)
+         # If am emulator is provided (Like Wine), or running on native, run asm_offset to generate gen_defines.asm
+         if (CMAKE_CROSSCOMPILING_EMULATOR OR NOT CMAKE_CROSSCOMPILING)
+             add_custom_command(OUTPUT gen_defines.asm DEPENDS asm_offset COMMAND asm_offset ${LOADER_ASM_DIALECT})
+@@ -311,7 +311,7 @@ elseif(UNIX OR MINGW OR (WIN32 AND USE_GAS)) # i.e.: Linux & Apple & MinGW & Win
+ 
+     if(ASSEMBLER_WORKS)
+         add_executable(asm_offset asm_offset.c)
+-        target_link_libraries(asm_offset loader_specific_options)
++        target_link_libraries(asm_offset PRIVATE $<BUILD_INTERFACE:loader_specific_options>)
+         # If not cross compiling, run asm_offset to generage gen_defines.asm
+         if (NOT CMAKE_CROSSCOMPILING)
+             add_custom_command(OUTPUT gen_defines.asm DEPENDS asm_offset COMMAND asm_offset GAS)
+@@ -374,25 +374,39 @@ if(WIN32)
          set(RC_FILE_LOCATION ${CMAKE_CURRENT_BINARY_DIR}/loader.rc)
      endif()
  
-+#    add_library(vulkan
-+#                SHARED
-+#                ${NORMAL_LOADER_SRCS}
-+#                ${CMAKE_CURRENT_SOURCE_DIR}/${API_TYPE}-1.def
-+#                ${RC_FILE_LOCATION})
-+
-+#    target_link_libraries(vulkan PRIVATE loader_specific_options)
-+		set(LOADER_UNKNOWN_CHAIN_LIBRARY $<$<TARGET_EXISTS:loader-unknown-chain>:$<TARGET_OBJECTS:loader-unknown-chain>>)
-+
-+#    if(UNKNOWN_FUNCTIONS_SUPPORTED AND TARGET loader-unknown-chain)
-+#        target_link_libraries(vulkan PRIVATE loader-unknown-chain)
-+#    endif()
 +    if (BUILD_STATIC_LOADER)
 +        set(VULKAN_LIBRARY_TYPE STATIC)
 +    else()
 +        set(VULKAN_LIBRARY_TYPE SHARED)
 +    endif()
 +
++
      add_library(vulkan
--                SHARED
-+                ${VULKAN_LIBRARY_TYPE}
+                 SHARED
                  ${NORMAL_LOADER_SRCS}
                  ${CMAKE_CURRENT_SOURCE_DIR}/${API_TYPE}-1.def
--                ${RC_FILE_LOCATION})
--
+                 ${RC_FILE_LOCATION})
+ 
 -    target_link_libraries(vulkan PRIVATE loader_specific_options)
--
--    if(UNKNOWN_FUNCTIONS_SUPPORTED AND TARGET loader-unknown-chain)
--        target_link_libraries(vulkan PRIVATE loader-unknown-chain)
--    endif()
-+                ${RC_FILE_LOCATION}
-+                ${LOADER_UNKNOWN_CHAIN_LIBRARY})
++    target_link_libraries(vulkan PRIVATE $<BUILD_INTERFACE:loader_specific_options>)
  
      # when adding the suffix the import and runtime library names must be consistent
      # mingw: libvulkan-1.dll.a / vulkan-1.dll
@@ -53,12 +55,12 @@ index 6296ebf..42eb998 100644
 +#                          PROPERTIES
 +#                          OUTPUT_NAME ${API_TYPE}-1)
 +#    if(MINGW)
-+     if (NOT BUILD_STATIC_LOADER)
          # generate the same DLL with mingw
++    if (NOT BUILD_STATIC_LOADER)
          set_target_properties(vulkan
                                PROPERTIES
 -                              PREFIX "")
-+                               OUTPUT_NAME ${API_TYPE}-1)
++                              OUTPUT_NAME ${API_TYPE}-1)
 +        if(MINGW)
 +            # generate the same DLL with mingw
 +            set_target_properties(vulkan
@@ -68,22 +70,44 @@ index 6296ebf..42eb998 100644
      endif()
  
      if(MSVC AND ENABLE_WIN10_ONECORE)
-@@ -516,7 +536,8 @@ if (LOADER_USE_UNSAFE_FILE_SEARCH)
+@@ -507,7 +521,7 @@ if (LOADER_USE_UNSAFE_FILE_SEARCH)
  endif()
  
  # common attributes of the vulkan library
 -target_link_libraries(vulkan PRIVATE loader_specific_options)
-+#target_link_libraries(vulkan PRIVATE loader_specific_options)
 +target_link_libraries(vulkan PRIVATE $<BUILD_INTERFACE:loader_specific_options>)
  
  target_link_libraries(vulkan PRIVATE Vulkan::Headers)
  add_library(Vulkan::Loader ALIAS vulkan)
-@@ -549,7 +570,7 @@ install(FILES "${version_config}" DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Vulk
+@@ -544,7 +558,20 @@ install(FILES "${version_config}" DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Vulk
  # https://gitlab.kitware.com/cmake/cmake/-/issues/22621
  find_package(PkgConfig)
  if (PKG_CONFIG_FOUND)
 -    if(WIN32)
++    set(PRIVATE_LIBS "")
++    get_target_property(vulkan_privates vulkan LINK_LIBRARIES) # get the list of private libraries
++    foreach(LIB IN LISTS vulkan_privates)
++        if (NOT LIB MATCHES "<" AND NOT LIB MATCHES "::") # Don't include generator expressions and targets
++            list(APPEND PRIVATE_LIBS "-l${LIB}")
++        endif()
++    endforeach()
++    list(REMOVE_DUPLICATES PRIVATE_LIBS)
++    string(REPLACE ";" " " PRIVATE_LIBS "${PRIVATE_LIBS}")
++    if(PRIVATE_LIBS)
++        set(PRIVATE_LIBS "Libs.private: ${PRIVATE_LIBS}")
++    endif()
++
 +    if(WIN32 AND NOT BUILD_STATIC_LOADER)
          if(MINGW)
              set(VULKAN_LIB_SUFFIX "-1.dll")
          else()
+diff --git a/loader/vulkan.pc.in b/loader/vulkan.pc.in
+index 6a285f2..05d4bf2 100644
+--- a/loader/vulkan.pc.in
++++ b/loader/vulkan.pc.in
+@@ -7,4 +7,5 @@ Name: Vulkan-Loader
+ Description: Vulkan Loader
+ Version: @VULKAN_LOADER_VERSION@
+ Libs: -L${libdir} -lvulkan@VULKAN_LIB_SUFFIX@
++@PRIVATE_LIBS@
+ Cflags: -I${includedir}
