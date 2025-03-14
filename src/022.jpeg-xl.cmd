@@ -2,7 +2,7 @@
 setlocal EnableDelayedExpansion
 color A
 
-set PackageName=jpeg-xl
+set PackageName=libjxl
 set LibraryName=jxl
 set ProjectName=libjxl
 set SourceCDX=%SourcePath%\%packageName%
