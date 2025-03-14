@@ -15,10 +15,11 @@ call %RootPath%src\vcmake.cmd %PackageName% %LibraryName% %ProjectName% %SourceC
 :: modify install
 if not exist "%VSSDKPath%\bin\zlib.dll" exit /b
 
-del "%VSSDKPath%\bin\zlib.dll"
-del "%VSSDKPath%\lib\zlib.lib"
-copy /b /y "%VSSDKPath%\lib\%LibraryName%.lib" "%VSSDKPath%\lib\zlib.lib"
-copy /b /y "%VSSDKPath%\lib\%LibraryName%.lib" "%VSSDKPath%\lib\z.lib"
+del "%VSSDKPath%\bin\zlib1.dll"
+del "%VSSDKPath%\bin\z.dll"
+del "%VSSDKPath%\lib\z.lib"
+copy /b /y "%VSSDKPath%\lib\zs.lib" "%VSSDKPath%\lib\zlib.lib"
+copy /b /y "%VSSDKPath%\lib\zs.lib" "%VSSDKPath%\lib\z.lib"
 
 set "PCFileName=%PCInstall%\zlib.pc"
 set "strOld=-L\${sharedlibdir} -lz"
